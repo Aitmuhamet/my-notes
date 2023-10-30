@@ -44,12 +44,13 @@ const tasks = [];
     themeBtn.classList.remove('light')
     themeBtn.classList.remove('dark')
     console.log(themeName);
-    if(themeName == !null){
-        themeBtn.classList.add(themeName)
+    if(themeName == 'dark'){
+        themeBtn.classList.add('dark')
+        themeBtn.setAttribute('data-theme', 'dark')
     }else{
         themeBtn.classList.add('light')
+        themeBtn.setAttribute('data-theme', 'light')
     }
-    themeBtn.setAttribute('data-theme', themeName)
 
 
     // events
