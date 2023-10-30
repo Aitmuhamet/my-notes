@@ -35,7 +35,22 @@ const tasks = [];
     const taskForm = document.taskForm;
     const title = taskForm.elements.title;
     const content = taskForm.elements.content;
-    const themeBtn = document.querySelector('.navbar-theme')
+    const themeBtn = document.querySelector('.navbar-theme');
+
+    const themeName = localStorage.getItem('themeName');
+    // установление темы, сохранённой из предыдущей сессии
+    document.documentElement.style = localStorage.getItem('theme')
+    
+    themeBtn.classList.remove('light')
+    themeBtn.classList.remove('dark')
+    console.log(themeName);
+    if(themeName == !null){
+        themeBtn.classList.add(themeName)
+    }else{
+        themeBtn.classList.add('light')
+    }
+    themeBtn.setAttribute('data-theme', themeName)
+
 
     // events
     taskForm.addEventListener('submit', onFormSubmit)
@@ -48,9 +63,10 @@ const tasks = [];
     //     contentItems.appendChild(card)
     // })
 
+    
     // удаление карточки со страницы и из локальной истории
     function deleteTask(event){
-        if(event.target.classList.contains('item__btn')){
+        if(event.target.classList.contains('item__btnDel')){
             const parent = event.target.closest('.item')
             const parentID = parent.getAttribute('data-id')
             let arr;
@@ -72,15 +88,16 @@ const tasks = [];
     // вывод записей из локальной истории
     function getTaskInLocalStore(){
         let arr;
+        console.log(localStorage.getItem('tasks'));
         if(localStorage.getItem('tasks') == null){
             arr = []
         }else{
             arr = JSON.parse(localStorage.getItem('tasks'))
+            arr.reverse()
+            arr.forEach(function(task){
+                contentItems.appendChild(createTemplateCard(task))
+            })
         }
-        arr.reverse()
-        arr.forEach(function(task){
-            contentItems.appendChild(createTemplateCard(task))
-        })
     }
     // выбор темы
     function selectTheme(){
@@ -100,6 +117,8 @@ const tasks = [];
             strTheme += `${key}: ${selectThemeObj[key]}; `
         }
         document.documentElement.style = strTheme
+        localStorage.setItem('theme', strTheme)
+        localStorage.setItem('themeName', myTheme)
     }
 
     // отправка формы
@@ -146,14 +165,21 @@ const tasks = [];
               h3.innerHTML = obj.title
         const p = document.createElement('p')
               p.innerHTML = obj.content
+
+        const itemButtons = document.createElement('div')
+              itemButtons.classList.add('item__buttons')
         const delBtn = document.createElement('a')
-              delBtn.classList.add('item__btn', 'icon-trash')
+              delBtn.classList.add('item__btnDel', 'icon-trash')
               delBtn.innerHTML = 'Удалить'
+        const editBtn = document.createElement('a')
+              editBtn.classList.add('item__btnEdit', 'icon-edit')
         
         itemText.appendChild(h3)
         itemText.appendChild(p)
+        itemButtons.appendChild(delBtn)
+        itemButtons.appendChild(editBtn)
         item.appendChild(itemText)
-        item.appendChild(delBtn)
+        item.appendChild(itemButtons)
 
         return item
     }
