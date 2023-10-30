@@ -20,6 +20,7 @@
 .icon-moon::before{content: '\f186';}
 .icon-trash::before{content: '\f2ed';}
 .icon-add::before{content: '\f055';}
+.icon-edit::before{content: '\f044';}
 
 :root{
     --bg: #deb887;
@@ -165,8 +166,14 @@ body{
     font-size: 18px;
     text-align: justify;
 }
-.item__btn {
-    width: 100%;
+.item__buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.item__btnDel,
+.item__btnEdit {
     padding: 10px;
     font-size: 20px;
     line-height: 20px;
@@ -177,6 +184,9 @@ body{
     align-items: center;
     flex-direction: row-reverse;
     column-gap: 10px;
+}
+.item__btnDel{
+    width: 100%;
 }
 
 @media (max-width: 992px) {
